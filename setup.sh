@@ -1,41 +1,31 @@
-#!/bin/bash
+#!/bin/sh
+set -e
 
 if [ $UID != 0 ]; then
     echo "This script must be run as root"
     exit -1;
 fi
 
+STF_PREFIX=/usr/local
+STF_HOME=$STF_PREFIX/stf
+STF_VAR=$STF_PREFIX/var
+STF_STORAGE=$STF_VAR/storage
+STF_RUN=$STF_VAR/run
+
 CDIR=$(cd $(dirname $0) && pwd)
 cd $CDIR
-git submodule update --init
 
-source $CDIR/runner/env.sh
 
 mkdir -p $STF_PREFIX
-git clone https://github.com/stf-storage/stf.git $STF_PREFIX/stf
+git clone https://github.com/stf-storage/stf.git $STF_HOME
 
-curl -kL http://install.perlbrew.pl | bash
-source $PERLBREW_ROOT/etc/bashrc
-
-
-perlbrew install perl-5.16.2
-perlbrew switch perl-5.16.2
-perlbrew install-cpanm
 
 cd $STF_HOME
-cpanm --installdeps .
+curl -L http://cpanmin.us | perl - --no-man-pages --verbose --no-interactive -L extlib --installdeps .
 
-
-cd $CDIR
-sh ./q4m/setup.sh
-
-if ! [ -e $STF_PREFIX/config.sh ]; then
-    cp $CDIR/runner/config.template.sh $STF_PREFIX/config.sh
-fi
 
 useradd stf
-mkdir -p /var/stf/storage
-chown stf:stf /var/stf/storage
-mkdir -p /home/stf/var/run
-chown stf:stf /home/stf/var/run
-chown stf:stf -R $CDIR
+mkdir -p $STF_STORAGE
+chown stf:stf $STF_STORAGE
+mkdir -p $STF_RUN
+chown stf:stf $STF_RUN
