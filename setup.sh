@@ -6,6 +6,11 @@ if [ $UID != 0 ]; then
     exit -1;
 fi
 
+STF_USER=$1
+if [ -z "$STF_USER" ]; then
+    STF_USER=stf
+fi
+
 STF_PREFIX=/usr/local
 STF_HOME=$STF_PREFIX/stf
 STF_VAR=$STF_PREFIX/var
@@ -24,8 +29,10 @@ cd $STF_HOME
 curl -L http://cpanmin.us | perl - --no-man-pages --verbose --no-interactive -L extlib --installdeps .
 
 
-useradd stf
+if [ -z `cat /etc/passwd | cut -f1 -d: | grep -e "^$STF_USER$"` ]; then
+    echo "create user"
+    useradd $STF_USER
+fi
 mkdir -p $STF_STORAGE
-chown stf:stf $STF_STORAGE
 mkdir -p $STF_RUN
-chown stf:stf $STF_RUN
+chown $STF_USER -R $STF_HOME
