@@ -6,11 +6,6 @@ if [ $UID != 0 ]; then
     exit -1;
 fi
 
-STF_USER=$1
-if [ -z "$STF_USER" ]; then
-    STF_USER=stf
-fi
-
 CDIR=$(cd $(dirname $0) && pwd)
 cd $CDIR
 
@@ -36,13 +31,13 @@ rm -rf $PERLBREW_ROOT/build/*
 curl -L http://cpanmin.us | perl - --no-man-pages --verbose --no-interactive -L extlib --installdeps .
 
 
-if [ -z `cat /etc/passwd | cut -f1 -d: | grep -e "^$STF_USER$"` ]; then
+if [ -z `cat /etc/passwd | cut -f1 -d: | grep -e "^stf$"` ]; then
     echo "create user"
-    useradd $STF_USER
+    useradd stf
 fi
 mkdir -p $STF_STORAGE_ROOT
 mkdir -p $STF_RUN
 cp -r $CDIR/etc/* $STF_HOME/etc/
 cp -r $CDIR/bin/* $STF_HOME/bin/
 cp $CDIR/stf.bashrc $STF_HOME/
-chown $STF_USER -R $STF_HOME/var/
+chown stf:stf -R $STF_HOME/var/
