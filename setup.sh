@@ -35,4 +35,6 @@ if [ -z `cat /etc/passwd | cut -f1 -d: | grep -e "^$STF_USER$"` ]; then
 fi
 mkdir -p $STF_STORAGE
 mkdir -p $STF_RUN
+cp -r $CDIR/etc/* $STF_HOME/etc/
+cp -r $CDIR/bin/* $STF_HOME/bin/
 chown $STF_USER -R $STF_HOME
