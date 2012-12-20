@@ -11,11 +11,11 @@ if [ -z "$STF_USER" ]; then
     STF_USER=stf
 fi
 
-source $CDIR/stf.bashrc
-source $CDIR/etc/storage.bashrc
-
 CDIR=$(cd $(dirname $0) && pwd)
 cd $CDIR
+
+source $CDIR/stf.bashrc
+source $CDIR/etc/storage.bashrc
 
 
 mkdir -p /usr/local
