@@ -1,7 +1,9 @@
 #!/bin/bash
 
-source /usr/local/stf/env/stf.bashrc
-source /usr/local/stf/env/storage.bashrc
+source /usr/local/stf/stf.bashrc
+source /usr/local/stf/etc/common.bashrc
+source /usr/local/stf/etc/storage.bashrc
+
 cd $STF_HOME
 exec start_server\
     --port=$STF_STORAGE_PORT\
