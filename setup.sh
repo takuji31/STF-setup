@@ -44,4 +44,5 @@ mkdir -p $STF_STORAGE_ROOT
 mkdir -p $STF_RUN
 cp -r $CDIR/etc/* $STF_HOME/etc/
 cp -r $CDIR/bin/* $STF_HOME/bin/
+cp $CDIR/stf.bashrc $STF_HOME/
 chown $STF_USER -R $STF_HOME/var/
